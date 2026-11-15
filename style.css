@@ -218,10 +218,14 @@ html[data-theme="dark"]{
 
 /* ---------- 题干与解析里的表格、配图 ---------- */
 
-.qtable{display:table;width:100%;border-collapse:collapse;font-size:13.5px;line-height:1.7;
-        margin:11px 0}
-.qtable th,.qtable td{border:1px solid var(--line2);padding:7px 10px;text-align:left;
+.qtable{display:table;width:100%;border-collapse:separate;border-spacing:0;
+        border:1px solid var(--line2);font-size:13.5px;line-height:1.7;margin:11px 0}
+.qtable th,.qtable td{border:0;border-right:1px solid var(--line2);
+                      border-bottom:1px solid var(--line2);
+                      padding:7px 10px;text-align:left;
                       vertical-align:top;word-break:break-word}
+.qtable th:last-child,.qtable td:last-child{border-right:0}
+.qtable tbody tr:last-child th,.qtable tbody tr:last-child td{border-bottom:0}
 .qtable th{background:rgba(127,127,127,.10);font-weight:600}
 .qtable .num{font-variant-numeric:tabular-nums;text-align:center;white-space:nowrap}
 .eximg{display:block;max-width:100%;height:auto;margin:10px 0;
