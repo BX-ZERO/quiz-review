@@ -338,12 +338,14 @@ html[data-theme="dark"] .themefab .ic-moon{display:none}
 
 .foot{
   margin:30px 0 72px;padding-top:18px;border-top:1px solid var(--line2);
-  display:flex;justify-content:center;
+  display:flex;justify-content:center;align-items:center;gap:14px;
 }
 .foot a{display:inline-flex;opacity:.82;transition:.15s;border-radius:3px}
 .foot a:hover{opacity:1}
 .foot a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .foot img{display:block;width:auto;height:20px}
+.foot .ver{font-size:12px;color:var(--muted);letter-spacing:.08em;
+           font-variant-numeric:tabular-nums}
 
 /* ---------- 判定标记 ---------- */
 
