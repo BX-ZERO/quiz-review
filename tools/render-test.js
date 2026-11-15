@@ -110,6 +110,14 @@ fire({ 'data-act': 'pickSel' });
 fire({ 'data-act': 'clearPending' });
 fire({ 'data-act': 'randomPick' });
 
+fire({ 'data-act': 'calcToggle' });
+['6', '3', '/', '9', '0', '*', '1', '0', '0', '='].forEach(k => fire({ 'data-act': 'calcKey', 'data-k': k }));
+const calcOut = root.textContent;
+fire({ 'data-act': 'calcKey', 'data-k': 'back' });
+fire({ 'data-act': 'calcKey', 'data-k': 'C' });
+fire({ 'data-act': 'calcToggle' });
+if (calcOut !== '70') errs.push('calc: 63/90*100 应为 70，实际 ' + JSON.stringify(calcOut));
+
 const bank = store['qs.bank.v1'] ? JSON.parse(store['qs.bank.v1']) : [];
 const cases = bank.filter(q => q.case);
 console.log('案例题:', cases.length, '条', cases.map(q => q.id + '/' + q.case + (q.caseStem ? '/背景在' : '/背景丢')).join(' '));

@@ -1351,9 +1351,73 @@
     applyTheme(cur === 'dark' ? 'light' : 'dark');
   }
 
+  /* ---------------- 计算器 ---------------- */
+
+  var calc = { open: false, expr: '', eq: false };
+
+  function calcEval(s) {
+    if (!s) return null;
+    if (!/^[0-9+\-*/(). ]+$/.test(s)) return null;
+    try {
+      var v = Function('"use strict";return (' + s + ')')();
+      if (typeof v !== 'number' || !isFinite(v)) return null;
+      return Math.round(v * 1e6) / 1e6;
+    } catch (err) { return null; }
+  }
+
+  function calcPaint() {
+    var out = $('#calcOut');
+    if (out) {
+      var s = calc.expr;
+      out.textContent = s ? s.replace(/\//g, '÷').replace(/\*/g, '×').replace(/-/g, '−') : '0';
+    }
+    var box = $('#calcBox');
+    if (box) box.hidden = !calc.open;
+    var btn = $('#btnCalc');
+    if (btn) {
+      btn.classList.toggle('on', calc.open);
+      btn.setAttribute('aria-expanded', calc.open ? 'true' : 'false');
+    }
+  }
+
+  function calcInput(k) {
+    if (k === 'C') {
+      calc.expr = ''; calc.eq = false;
+    } else if (k === 'back') {
+      calc.expr = calc.expr.slice(0, -1); calc.eq = false;
+    } else if (k === '=') {
+      var v = calcEval(calc.expr);
+      if (v !== null) { calc.expr = String(v); calc.eq = true; }
+    } else if (/^[0-9.]$/.test(k) || '+-*/()'.indexOf(k) >= 0) {
+      if (calc.eq && /^[0-9.(]$/.test(k)) calc.expr = '';
+      calc.eq = false;
+      if (calc.expr.length < 60) calc.expr += k;
+    }
+    calcPaint();
+  }
+
+  function calcKey(e) {
+    if (!calc.open) return false;
+    var k = e.key;
+    if (/^[0-9.]$/.test(k)) { calcInput(k); e.preventDefault(); return true; }
+    if ('+-*/()'.indexOf(k) >= 0) { calcInput(k); e.preventDefault(); return true; }
+    if (k === 'x' || k === 'X') { calcInput('*'); e.preventDefault(); return true; }
+    if (k === 'Enter' || k === '=') { calcInput('='); e.preventDefault(); return true; }
+    if (k === 'Backspace') { calcInput('back'); e.preventDefault(); return true; }
+    if (k === 'Escape') { calc.open = false; calcPaint(); e.preventDefault(); return true; }
+    return false;
+  }
+
   /* ---------------- 动作 ---------------- */
 
   var ACTIONS = {
+    calcToggle: function () {
+      calc.open = !calc.open;
+      calcPaint();
+    },
+    calcKey: function (el) {
+      calcInput(el.getAttribute('data-k') || '');
+    },
     go: function (el) {
       var v = el.getAttribute('data-view');
       if (v) { state.view = v; render(); }
@@ -1648,6 +1712,7 @@
       if (e.key === 'Escape') { closeModal(); e.preventDefault(); }
       return;
     }
+    if (calcKey(e)) return;
     if (state.view !== 'quiz') return;
     var k = e.key;
     if (/^[a-jA-J]$/.test(k)) {
@@ -1680,6 +1745,7 @@
 
   function boot() {
     initTheme();
+    calcPaint();
     initData();
     loadSession();
     var tb = $('#btnTheme');
