@@ -1,3 +1,4 @@
+window.QUESTIONS_VER = "2026-11-15.1";
 // 错题复习题库：按卷组织，paper 为卷名。
 window.QUESTIONS = [
   {

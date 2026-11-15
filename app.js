@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  var LS = { bank: 'qs.bank.v1', stat: 'qs.stat.v1', pref: 'qs.pref.v1', sess: 'qs.session.v1' };
+  var LS = { bank: 'qs.bank.v1', stat: 'qs.stat.v1', pref: 'qs.pref.v1', sess: 'qs.session.v1', ver: 'qs.bank.ver' };
   var TYPE_LABEL = { single: '单选', multi: '多选', judge: '判断' };
   var NO_PAPER = '未分卷';
   var LETTERS = 'ABCDEFGHIJ';
@@ -135,6 +135,7 @@
     if (!STAT || typeof STAT !== 'object') STAT = {};
     migrateSeed();
     mergeNewSeed();
+    syncSeedContent();
     pruneStat();
     refreshDup();
   }
@@ -163,6 +164,37 @@
       added += 1;
     });
     if (added) writeJSON(LS.bank, BANK);
+  }
+
+  /* 题库文件改版后，把本地旧题库里同一道题的正文换成本次种子里的内容。
+     只覆盖题干、选项、答案、解析这些内容字段，作答记录与自己新增的题都不动。
+     靠 window.QUESTIONS_VER 判断版本，版本没变就跳过。 */
+  function syncSeedContent() {
+    var seed = Array.isArray(window.QUESTIONS) ? window.QUESTIONS : [];
+    var ver = String(window.QUESTIONS_VER || '');
+    if (!seed.length || !ver) return;
+    if (localStorage.getItem(LS.ver) === ver) return;
+    var fresh = {};
+    seed.forEach(function (raw) { fresh[raw.id] = normalize(raw); });
+    var touched = 0;
+    BANK.forEach(function (q) {
+      var s = fresh[q.id];
+      if (!s) return;
+      q.no = s.no;
+      q.paper = s.paper;
+      q.papers = s.papers;
+      q.type = s.type;
+      q.category = s.category;
+      q.stem = s.stem;
+      q.options = s.options;
+      q.answer = s.answer;
+      q.explain = s.explain;
+      if (s.case) { q.case = s.case; q.caseStem = s.caseStem; }
+      else { delete q.case; delete q.caseStem; }
+      touched += 1;
+    });
+    if (touched) writeJSON(LS.bank, BANK);
+    localStorage.setItem(LS.ver, ver);
   }
 
   /* 老版本的示例题（id 以 seed- 开头）换成新的卷5 题库：
