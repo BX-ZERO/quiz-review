@@ -81,6 +81,13 @@ html[data-theme="dark"]{
 /* 判定后：正确项 */
 .opt.is-right{border-color:var(--good-bd);background:var(--good-bg);color:var(--good)}
 .opt.is-right .k{background:var(--good);border-color:var(--good);color:#fff}
+.opt.is-right::after{content:"✓";margin-left:auto;color:var(--good);font-size:13px;line-height:1.4}
+
+/* 判定后：正确答案但你没选 */
+.opt.is-ans{border-color:var(--good-bd);border-style:dashed;background:transparent;color:var(--text)}
+.opt.is-ans .k{border-color:var(--good);color:var(--good)}
+.opt.is-ans::after{content:"正确答案";margin-left:auto;color:var(--good);font-size:11px;
+                   white-space:nowrap;line-height:1.5}
 
 /* 判定后：错选项 */
 .opt.is-wrong{border-color:var(--danger-bd);background:var(--danger-bg);color:var(--danger)}
@@ -116,6 +123,9 @@ html[data-theme="dark"]{
 .ex.open .exbody{display:block}
 .exbody .ans{margin:0 0 8px;font-size:13px;color:var(--muted)}
 .exbody .ans b{color:var(--good);font-weight:700;letter-spacing:.04em}
+.exbody .ans.ok b{color:var(--good)}
+.exbody .ans.no b{color:var(--danger)}
+.exbody .ans.no{color:var(--muted)}
 .exbody .txt{white-space:pre-wrap}
 .exbody table{margin:11px 0;font-size:13.5px}
 .exbody th,.exbody td{padding:6px 9px}

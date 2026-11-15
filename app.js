@@ -677,12 +677,16 @@
     var picks = qz.picks[q.id] || [];
     var judged = !!qz.judged[q.id];
     var open = !!state.openEx[q.id];
+    var pickedRight = judged && isCorrect(q, picks);
 
     var optsHtml = q.options.map(function (o) {
       var cls = 'opt';
       if (judged) {
-        if (q.answer.indexOf(o.k) >= 0) cls += ' is-right';
-        else if (picks.indexOf(o.k) >= 0) cls += ' is-wrong';
+        var inAns = q.answer.indexOf(o.k) >= 0;
+        var inPick = picks.indexOf(o.k) >= 0;
+        if (inAns && inPick) cls += ' is-right';
+        else if (inAns) cls += ' is-ans';
+        else if (inPick) cls += ' is-wrong';
       } else if (picks.indexOf(o.k) >= 0) {
         cls += ' is-on';
       }
@@ -691,12 +695,21 @@
         '<span class="t">' + o.t + '</span></button>';
     }).join('');
 
+    var verdict = '';
+    if (judged) {
+      verdict = '<div class="ans ' + (pickedRight ? 'ok' : 'no') + '">' +
+        '<b>' + (pickedRight ? '答对了' : '答错了') + '</b>' +
+        '　正确答案 <b>' + esc(q.answer.join('')) + '</b>' +
+        (pickedRight ? '' : '　你选了 <b>' + esc(picks.slice().sort().join('') || '—') + '</b>') +
+        '</div>';
+    }
+
     var exHtml = '';
     if (q.explain) {
       exHtml = '<div class="ex' + (open ? ' open' : '') + '">' +
         '<button class="extog" data-act="toggleEx"><span class="tri">▶</span>解析</button>' +
         '<div class="exbody">' +
-        (judged ? '<div class="ans">正确答案 <b>' + esc(q.answer.join('')) + '</b></div>' : '') +
+        verdict +
         '<div class="txt">' + q.explain + '</div>' +
         '</div></div>';
     }
