@@ -414,7 +414,7 @@
       dup: ['重复检查', '题干相似的题会归为一组'],
       quiz: ['答题', ''],
       result: ['成绩', ''],
-      wrong: ['错题本', '按试卷归类，同一题错了多少次都能看到'],
+      wrong: ['错题本', '按试卷看分布，点一下就开始练'],
       import: ['导入', 'JSON 直接粘进来']
     };
     var t = titles[state.view] || ['总览', ''];
@@ -784,13 +784,18 @@
       return '<div class="empty">错题本是空的。<br><b>做错的题会自动收进来。</b></div>' +
         '<div class="panel"><div class="bulkbar"><button data-act="go" data-view="home">回总览</button></div></div>';
     }
-    var byPaper = {};
+    var byPaper = {}, wrongTotal = 0, rightTotal = 0;
     ids.forEach(function (id) {
       var q = byId(id);
       if (!q) return;
       var p = paperOf(q);
-      if (!byPaper[p]) byPaper[p] = [];
-      byPaper[p].push(q);
+      if (!byPaper[p]) byPaper[p] = { list: [], wrong: 0 };
+      var s = STAT[id] || {};
+      var w = s.wrong || 0;
+      byPaper[p].list.push(q);
+      byPaper[p].wrong += w;
+      wrongTotal += w;
+      rightTotal += s.right || 0;
     });
 
     var names = Object.keys(byPaper).sort(function (a, b) {
@@ -799,39 +804,30 @@
       return a.localeCompare(b, 'zh-Hans-CN');
     });
 
-    return names.map(function (name) {
-      var list = byPaper[name].slice().sort(function (a, b) {
-        return ((STAT[b.id] || {}).wrong || 0) - ((STAT[a.id] || {}).wrong || 0);
-      });
-      var body = list.map(function (q) {
-        var s = STAT[q.id] || {};
-        var picks = s.lastPicks && s.lastPicks.length ? s.lastPicks.slice().sort().join('') : '';
-        return '<div class="rv no">' +
-          '<div class="rvh">' +
-          '<span class="tag">错 ' + (s.wrong || 1) + ' 次</span>' +
-          (q.no ? '<span class="pp">第 ' + esc(q.no) + ' 题</span>' : '') +
-          '<span class="pp">' + TYPE_LABEL[q.type] + '</span>' +
-          (s.right ? '<span class="dot-right">后来对过 ' + s.right + ' 次</span>' : '') +
-          '</div>' +
-          '<div class="stem">' + (q.stem || '') + '</div>' +
-          (picks ? '<div class="mine">上次作答 <b>' + esc(picks) + '</b>　正确答案 <b>' +
-            esc(q.answer.join('')) + '</b></div>' : '') +
-          (q.explain ? '<div class="rv-ex"><span class="lab">解析</span>' + q.explain + '</div>' : '') +
-          '<div class="confirmrow">' +
-          '<button class="mini" data-act="redoOne" data-id="' + esc(q.id) + '">重做这题</button>' +
-          '<button class="mini" data-act="editQ" data-id="' + esc(q.id) + '">编辑</button>' +
-          '<button class="mini" data-act="markMastered" data-id="' + esc(q.id) + '">移出错题本</button>' +
-          '</div>' +
-          '</div>';
-      }).join('');
-
-      return '<div class="ghead"><div><b>' + esc(name) + '</b></div>' +
-        '<div class="meta">' + list.length + ' 题</div></div>' +
-        '<div class="panel"><div class="review">' + body + '</div>' +
-        '<div class="bulkbar">' +
-        '<button class="primary" data-act="redoPaperWrong" data-paper="' + esc(name) + '">练这一卷的错题</button>' +
-        '</div></div>';
+    var rows = names.map(function (name) {
+      var g = byPaper[name];
+      return '<tr><td>' + esc(name) + '</td>' +
+        '<td class="num">' + g.list.length + '</td>' +
+        '<td class="num">' + g.wrong + '</td>' +
+        '<td class="num"><button class="mini" data-act="practicePaperWrong" data-paper="' +
+        esc(name) + '">练这卷</button></td></tr>';
     }).join('');
+
+    return (
+      '<div class="stats">' +
+      '<div class="stat"><div class="k">错题</div><div class="v">' + ids.length + '</div></div>' +
+      '<div class="stat"><div class="k">累计答错</div><div class="v">' + wrongTotal + '</div></div>' +
+      '<div class="stat"><div class="k">后来答对</div><div class="v">' + rightTotal + '</div></div>' +
+      '<div class="stat"><div class="k">涉及试卷</div><div class="v">' + names.length + '</div></div>' +
+      '</div>' +
+      '<div class="panel">' +
+      '<table class="qtable"><thead><tr><th>试卷</th><th>错题数</th><th>累计答错</th>' +
+      '<th>单独练</th></tr></thead><tbody>' + rows + '</tbody></table>' +
+      '<div class="bulkbar">' +
+      '<button class="primary" data-act="practiceWrong">开始练错题（' + ids.length + ' 题）</button>' +
+      '<button data-act="go" data-view="home">回总览</button>' +
+      '</div></div>'
+    );
   }
 
   function viewImport() {
@@ -1587,6 +1583,20 @@
       saveBank();
       render();
       toast('只留了这一条');
+    },
+    practiceWrong: function () {
+      var ids = wrongIds();
+      if (!ids.length) { toast('错题本是空的'); return; }
+      startQuiz(ids, 'practice', '错题练习');
+    },
+    practicePaperWrong: function (el) {
+      var name = el.getAttribute('data-paper');
+      var ids = wrongIds().filter(function (id) {
+        var q = byId(id);
+        return q && paperOf(q) === name;
+      });
+      if (!ids.length) { toast('这一卷没有错题'); return; }
+      startQuiz(ids, 'practice', name + ' · 错题练习');
     },
     againWrong: function () {
       var qz = state.quiz;
