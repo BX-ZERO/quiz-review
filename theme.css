@@ -1,0 +1,268 @@
+/* ============================================================
+   theme.css · 通用界面样式
+   ------------------------------------------------------------
+   从「活动代币计算器」抽出，数值与命名保持原样，未作改动。
+
+   用法：
+     1. <link rel="stylesheet" href="theme.css">
+     2. 内容包在 .wrap 里
+     3. 标题行用 h1 + .h1en 起头
+     4. 自己的业务样式另写 style.css，不重复这里的规则
+
+   深色：
+     <html data-theme="dark">，或者用 JS 切这个属性并存在 localStorage
+
+   版本 1.0
+   ============================================================ */
+
+/* ---------- 一、变量 ---------- */
+
+:root{
+  --bg:#f4f4f5; --card:#ffffff; --line:#e3e4e7; --line2:#c8cbd1;
+  --text:#111417; --muted:#767c86; --accent:#0488a9; --good:#14804a; --warn:#0488a9;
+  --gold:#c9a227; --purple:#8b5cf6; --blue:#3b82f6; --grey:#9ca3af; --rainbow:#d946ef;
+  --th:#f7f8f9; --hover:#fafbfd; --note:#eef5fc; --note-bd:#bcd6ee; --note-tx:#1c4f7c;
+  /* 选中态 */
+  --sel-bg:#eef3ff; --sel-bd:#b9cdfb; --sel-tx:#1d4ed8;
+  /* 提示条图标底色 */
+  --note-ic:#3576b8;
+  /* 警示格 */
+  --alert-bg:#fff7f7; --alert-bd:#f0c9c9; --alert-tx:#a61b23;
+}
+
+html[data-theme="dark"]{
+  --bg:#141619; --card:#1b1e23; --line:#2b2f36; --line2:#3b4149;
+  --text:#e6e8eb; --muted:#98a0aa; --accent:#18d1ff;
+  --th:#22262c; --hover:#232830; --note:#1b2a38; --note-bd:#2d4a66; --note-tx:#9cc6ea;
+  --sel-bg:#1e2a44; --sel-bd:#2f4a7a; --sel-tx:#7aa7ff;
+  --note-ic:#3576b8;
+  --alert-bg:#2a1e1f; --alert-bd:#4a2f31; --alert-tx:#e0898f;
+}
+
+/* ---------- 二、基础 ---------- */
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;
+  font-size:14px;
+  line-height:1.65;
+  -webkit-text-size-adjust:100%;
+}
+
+.wrap{max-width:1000px;margin:0 auto;padding:22px 16px 96px}
+
+/* 数字永远等宽，表格里不跳 */
+.num,.v,.times{font-variant-numeric:tabular-nums}
+
+/* 英文小标签，当装饰用，不承载信息 */
+.en{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;color:var(--muted)}
+
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* ---------- 三、页头 ---------- */
+
+header{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:16px;
+  margin-bottom:18px;padding-bottom:15px;border-bottom:1px solid var(--line2);
+}
+
+h1{font-size:26px;margin:0 0 7px;font-weight:600;letter-spacing:-.01em;line-height:1.2}
+h1 .h1en{font-size:10.5px;letter-spacing:.18em;font-weight:500;color:var(--muted);
+         margin-left:11px;vertical-align:middle;text-transform:uppercase}
+
+.subtitle{font-size:15.5px;font-weight:600;margin:0 0 5px}
+.subtitle .shopname{margin-left:10px;padding-left:12px;border-left:1px solid var(--line2);
+                    font-size:13.5px;font-weight:500;color:#5c626c}
+
+.hacts{display:flex;gap:8px;flex:none;align-items:center}
+
+.meta{color:var(--muted);font-size:12.5px}
+.meta b{color:var(--text);font-weight:600}
+
+.ver{color:var(--muted);font-size:11.5px;margin-left:8px;
+     font-family:ui-monospace,Consolas,monospace;letter-spacing:.04em}
+
+/* ---------- 四、面板 ---------- */
+
+.panel{
+  background:var(--card);border:1px solid var(--line);border-radius:4px;
+  padding:18px 20px;margin-bottom:16px;
+}
+
+.bonus{border-top:1px dashed var(--line);padding-top:12px;margin-top:14px}
+
+/* 统计格：靠 1px 间隙露出底色当分隔线 */
+.stats{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:18px;
+  background:var(--line);border:1px solid var(--line);border-radius:4px;overflow:hidden;
+}
+.stat{background:var(--card);padding:13px 16px}
+.stat .k{font-size:11px;color:var(--muted);letter-spacing:.06em}
+.stat .v{font-size:24px;font-weight:600;font-variant-numeric:tabular-nums;
+         margin-top:3px;letter-spacing:-.01em}
+.stat .calc{font-size:12.5px;color:#9aa1ab;margin-top:3px;letter-spacing:.01em}
+.stat .calc b{font-weight:600;color:#6d747e}
+
+/* 需要留意的格子，用淡红底标出来 */
+.stat.left{background:var(--alert-bg);border:1px solid var(--alert-bd);
+           box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--alert-bd) 45%, transparent)}
+.stat.left .v{color:var(--accent);font-size:26px;font-weight:800}
+.stat.left .k{color:var(--alert-tx);font-weight:600}
+
+/* ---------- 五、按钮 ---------- */
+
+button{
+  font-family:inherit;font-size:13px;border:1px solid var(--line2);background:var(--card);
+  color:var(--text);padding:7px 14px;border-radius:4px;cursor:pointer;
+  transition:.15s;letter-spacing:.02em;
+}
+button:hover{border-color:#9aa0aa;background:#fafafb}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+/* 跟着 --accent 走，主色换成横幅主色时这里也自动跟上，不写死色值 */
+button.primary:hover{filter:brightness(.9)}
+
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.tabs button.on{background:var(--sel-bg);border-color:var(--sel-bd);color:var(--sel-tx)}
+
+/* ---------- 六、输入 ---------- */
+
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:12.5px;color:#4f5560;font-weight:600;letter-spacing:.02em}
+.field input{
+  width:140px;padding:8px 11px;border:1px solid var(--line2);border-radius:4px;
+  font-family:ui-monospace,Consolas,monospace;font-size:15px;font-variant-numeric:tabular-nums;
+}
+.field input:focus{outline:none;border-color:var(--accent);
+                   box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 9%, transparent)}
+.field select{font-family:inherit;font-size:13.5px;padding:8px 10px;
+              border:1px solid var(--line2);border-radius:4px;background:var(--card)}
+.field select:focus{outline:none;border-color:var(--accent)}
+
+.rows{display:flex;flex-wrap:wrap;gap:22px;align-items:flex-end}
+
+/* ---------- 七、表格 ---------- */
+
+table{width:100%;border-collapse:collapse}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid #f1f2f4;font-size:13.5px}
+th{font-size:12.5px;color:#565c66;font-weight:600;background:#f7f8f9;letter-spacing:0;
+   border-bottom:1px solid var(--line2)}
+tr:last-child td{border-bottom:none}
+tbody tr:hover{background:#fbfbfc}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+
+.tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+
+/* ---------- 八、分组 ---------- */
+
+.group{
+  margin-bottom:16px;background:var(--card);border:1px solid var(--line);
+  border-radius:4px;overflow:hidden;
+}
+
+.ghead{
+  display:flex;align-items:center;gap:11px;padding:13px 18px;background:var(--card);
+  border-bottom:1px solid var(--line);cursor:pointer;user-select:none;
+}
+.ghead .idx{font-size:11px;letter-spacing:.14em;color:#8d939c;font-weight:700;
+            font-variant-numeric:tabular-nums}
+.ghead .t{font-weight:600;font-size:14px}
+.ghead .n{color:var(--muted);font-size:11.5px}
+.ghead .sum{margin-left:auto;color:var(--muted);font-size:12.5px;font-variant-numeric:tabular-nums}
+.ghead .arrow{color:var(--muted);font-size:11px;transition:.2s}
+.group.collapsed .arrow{transform:rotate(-90deg)}
+.group .body{overflow:hidden}
+.group.collapsed .body{display:none}
+
+/* ---------- 九、提示条 ---------- */
+
+.notice{
+  display:flex;margin:0 0 20px;padding:13px 16px 13px 14px;
+  border:1px solid var(--note-bd);background:var(--note);border-radius:3px;
+  gap:11px;align-items:flex-start;
+}
+.notice .ic{
+  flex:none;width:22px;height:22px;border-radius:50%;background:var(--note-ic);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;line-height:1;margin-top:1px;
+}
+.notice .nt{flex:1 1 auto;min-width:0;font-size:13.5px;color:#1e3a56;line-height:1.75}
+.notice .nt b{font-weight:700}
+.notice .nt .sub{display:block;color:#5b7288;font-size:12.5px;margin-top:2px}
+.notice .nt .cd{font-size:16px;font-weight:700;color:#14416b;
+                font-variant-numeric:tabular-nums;letter-spacing:.01em}
+
+/* 警告语气 */
+.notice.notice-warn{border-color:#e6cfa4;background:#fdf7e9}
+.notice.notice-warn .ic{background:#b8862f}
+.notice.notice-warn .nt{color:#5a4416}
+.notice.notice-warn .nt .sub{color:#8a7440}
+
+/* ---------- 十、弹窗 ---------- */
+
+.modal{display:none;position:fixed;inset:0;z-index:9000}
+.modal.on{display:block}
+.mmask{position:absolute;inset:0;background:rgba(12,15,20,.55);backdrop-filter:blur(2px)}
+
+.mbox{
+  position:relative;max-width:480px;margin:12vh auto 0;background:var(--card);
+  display:flex;flex-direction:column;min-height:460px;
+  border:1px solid var(--line2);border-radius:6px;padding:22px 24px 18px;
+  box-shadow:0 18px 50px rgba(0,0,0,.28);
+}
+.mtt{font-size:16.5px;font-weight:600;margin-bottom:12px;padding-left:11px;position:relative}
+.mtt::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--accent)}
+.mbody{font-size:13.5px;line-height:1.85;color:var(--text);flex:1 1 auto}
+.mbody p{margin:0 0 9px}
+.mbody b{font-weight:600;white-space:nowrap}
+.mbody code{background:var(--th);border:1px solid var(--line);border-radius:3px;
+            padding:1px 5px;font-size:12.5px;font-family:ui-monospace,Consolas,monospace;
+            white-space:nowrap}
+.mstep{position:relative;padding-left:26px;margin:0 0 9px}
+.mn{position:absolute;left:0;top:3px;flex:none;width:18px;height:18px;border-radius:50%;
+    background:var(--accent);color:#fff;font-size:11.5px;line-height:18px;text-align:center}
+.mtip{color:var(--muted);font-size:12.5px;margin-top:4px}
+.mact{margin-top:auto;display:flex;justify-content:flex-end;gap:9px;
+      margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.mnote{font-size:12px;color:#7c8290;line-height:1.7;border-top:1px dashed var(--line);
+       padding-top:9px;margin-top:11px}
+.mnote a{color:var(--accent);text-decoration:none;border-bottom:1px solid currentColor}
+.mnote a:hover{opacity:.8}
+
+/* ---------- 十一、浮层提示 ---------- */
+
+.toast{
+  position:fixed;left:50%;bottom:88px;transform:translateX(-50%) translateY(8px);
+  background:#22262c;color:#fff;font-size:13px;padding:9px 16px;border-radius:4px;
+  opacity:0;pointer-events:none;transition:.2s;z-index:9500;white-space:nowrap;
+  box-shadow:0 6px 22px rgba(0,0,0,.24);
+}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ---------- 十二、图标 ---------- */
+
+.ico{width:32px;height:32px;object-fit:contain;vertical-align:middle;margin-right:8px;flex:none}
+
+/* ---------- 十三、深色补丁 ---------- */
+
+html[data-theme="dark"] th{color:#c3c9d2}
+html[data-theme="dark"] .notice .nt .sub{color:#7f9cb8}
+
+/* ---------- 十四、移动端 ---------- */
+
+@media(max-width:760px){
+  .wrap{padding:16px 12px 92px}
+  h1{font-size:22px}
+  .panel{padding:13px 14px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .stat{padding:10px 12px}
+  .stat .v{font-size:19px}
+  .stat.left .v{font-size:21px}
+  .ghead{padding:11px 14px;gap:8px}
+  .mbox{max-width:calc(100vw - 28px);min-height:0;margin:7vh auto 0;padding:20px 18px}
+  .mact{flex-wrap:wrap;gap:8px}
+  .mact button{flex:1 1 auto;min-width:0}
+}

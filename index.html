@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>错题复习 · REVIEW</title>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>错题复习<span class="h1en">REVIEW</span></h1>
+      <div class="subtitle" id="hSub">总览</div>
+      <div class="meta" id="hMeta"></div>
+    </div>
+    <div class="hacts">
+      <button id="btnHome" hidden>返回总览</button>
+    </div>
+  </header>
+
+  <div id="app"></div>
+</div>
+
+<button id="btnTheme" class="themefab" type="button" aria-label="切换深浅色" title="切换深浅色">
+  <svg class="ic-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.7A8.6 8.6 0 1 1 9.3 3.5a6.9 6.9 0 0 0 11.2 11.2z"/></svg>
+  <svg class="ic-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.1"/><path d="M12 2.6v2.1M12 19.3v2.1M4.4 4.4l1.5 1.5M18.1 18.1l1.5 1.5M2.6 12h2.1M19.3 12h2.1M4.4 19.6l1.5-1.5M18.1 5.9l1.5-1.5"/></svg>
+</button>
+
+<div class="modal" id="modal">
+  <div class="mmask" data-act="closeModal"></div>
+  <div class="mbox" id="mbox"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="questions.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

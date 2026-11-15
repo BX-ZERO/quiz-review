@@ -1,0 +1,6 @@
+questions.bak*.js
+questions.before-merge.js
+questions.new.js
+*.log
+.DS_Store
+Thumbs.db

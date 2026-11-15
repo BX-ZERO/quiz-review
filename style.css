@@ -1,0 +1,383 @@
+/* ============================================================
+   错题复习 · 业务样式
+   theme.css 提供通用外观，本文件只写这个项目独有的布局。
+   ============================================================ */
+
+:root{
+  --danger:#c0392b; --danger-bg:#fdf1f0; --danger-bd:#f0c9c9;
+  --good-bg:#eff8f2; --good-bd:#b7ddc6;
+  --gold-bg:#fdf7e9; --gold-bd:#e6d3a2; --gold-tx:#7a5b13;
+}
+
+html[data-theme="dark"]{
+  --danger:#e0898f; --danger-bg:#2a1e1f; --danger-bd:#4a2f31;
+  --good-bg:#17281f; --good-bd:#2f5240; --good:#3ecf8e;
+  --gold-bg:#2a2418; --gold-bd:#4a4029; --gold-tx:#d8b86a;
+}
+
+/* ---------- 总览入口 ---------- */
+
+.entry{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-bottom:16px}
+
+.entry button{
+  display:flex;flex-direction:column;align-items:flex-start;gap:3px;
+  padding:16px 18px;text-align:left;border-radius:4px;background:var(--card);
+  font-size:15px;font-weight:600;
+}
+.entry button em{font-style:normal;font-size:12.5px;color:var(--muted);font-weight:400;line-height:1.6}
+.entry button .en{letter-spacing:.16em;margin-bottom:2px}
+
+/* ---------- 答题：题目卡 ---------- */
+
+.qcard{background:var(--card);border:1px solid var(--line);border-radius:4px;
+       padding:20px 22px;margin-bottom:16px}
+
+.qhead{display:flex;align-items:center;gap:9px;margin-bottom:11px;flex-wrap:wrap}
+.qhead .idx{font-size:11.5px;font-weight:700;color:var(--muted);letter-spacing:.1em;
+            font-variant-numeric:tabular-nums}
+.badge{font-size:11px;padding:1px 7px;border-radius:3px;border:1px solid var(--line2);
+       color:var(--muted);line-height:1.7}
+.badge.single{color:var(--sel-tx);border-color:var(--sel-bd);background:var(--sel-bg)}
+.badge.multi{color:var(--gold-tx);border-color:var(--gold-bd);background:var(--gold-bg)}
+.badge.judge{color:var(--good);border-color:var(--good-bd);background:var(--good-bg)}
+.qhead .cat{margin-left:auto;font-size:12px;color:var(--muted)}
+
+.stem{font-size:16.5px;line-height:1.9;margin:0 0 16px;white-space:pre-wrap;word-break:break-word}
+.stem img{max-width:100%;border:1px solid var(--line);border-radius:4px;vertical-align:middle}
+.stem .qimg-holder{margin:10px 0 0;font-size:12.5px;color:var(--muted)}
+
+/* ---------- 案例题背景 ---------- */
+
+.casemain{font-size:14px;line-height:1.95;color:var(--muted);
+          background:var(--th);border:1px solid var(--line2);border-radius:4px;
+          padding:13px 15px;margin:0 0 15px;white-space:pre-wrap;word-break:break-word}
+.casemain .clab{display:inline-block;font-size:11px;letter-spacing:.08em;
+                color:var(--accent);border:1px solid var(--accent);border-radius:3px;
+                padding:0 5px;margin-right:7px;vertical-align:1px}
+
+/* ---------- 选项 ---------- */
+
+.opts{display:flex;flex-direction:column;gap:10px}
+
+.opt{
+  display:flex;align-items:flex-start;gap:12px;width:100%;text-align:left;
+  padding:13px 15px;background:var(--card);border:1px solid var(--line2);
+  border-radius:4px;font-size:15.5px;line-height:1.75;cursor:pointer;
+  transition:.15s;font-family:inherit;color:var(--text);
+}
+.opt:hover{background:var(--hover);border-color:var(--accent)}
+
+.opt .k{
+  flex:none;width:24px;height:24px;border-radius:50%;border:1px solid var(--line2);
+  font-size:12.5px;line-height:22px;text-align:center;font-weight:600;color:var(--muted);
+  font-variant-numeric:tabular-nums;margin-top:1px;
+}
+.opt .t{flex:1 1 auto;min-width:0;word-break:break-word}
+
+/* 已选（考试模式和多选未提交时） */
+.opt.is-on{border-color:var(--sel-bd);background:var(--sel-bg);color:var(--sel-tx)}
+.opt.is-on .k{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* 判定后：正确项 */
+.opt.is-right{border-color:var(--good-bd);background:var(--good-bg);color:var(--good)}
+.opt.is-right .k{background:var(--good);border-color:var(--good);color:#fff}
+
+/* 判定后：错选项 */
+.opt.is-wrong{border-color:var(--danger-bd);background:var(--danger-bg);color:var(--danger)}
+.opt.is-wrong .k{background:var(--danger);border-color:var(--danger);color:#fff}
+
+/* 判定后：锁定，不再响应悬停 */
+.opts.locked .opt{cursor:default}
+.opts.locked .opt:hover{background:inherit}
+.opts.locked .opt.is-right:hover{background:var(--good-bg)}
+.opts.locked .opt.is-wrong:hover{background:var(--danger-bg)}
+.opts.locked .opt:not(.is-right):not(.is-wrong):hover{background:var(--card);border-color:var(--line2)}
+
+/* ---------- 解析区 ---------- */
+
+.ex{
+  display:grid;grid-template-columns:auto 1fr;gap:0 12px;
+  margin-top:14px;padding-top:13px;border-top:1px dashed var(--line);
+}
+
+.extog{
+  display:flex;align-items:center;gap:6px;align-self:start;
+  font-size:12.5px;padding:5px 11px;border-radius:4px;
+  background:var(--th);border:1px solid var(--line2);color:var(--muted);
+  white-space:nowrap;
+}
+.extog:hover{color:var(--text);border-color:var(--accent);background:var(--hover)}
+.extog .tri{font-size:9px;transition:.15s;display:inline-block}
+.ex.open .extog .tri{transform:rotate(90deg)}
+.ex.open .extog{color:var(--accent);border-color:var(--sel-bd);background:var(--sel-bg)}
+
+.exbody{display:none;grid-column:2;font-size:14.5px;line-height:1.9;
+        color:var(--text);min-width:0;word-break:break-word}
+.ex.open .exbody{display:block}
+.exbody .ans{margin:0 0 8px;font-size:13px;color:var(--muted)}
+.exbody .ans b{color:var(--good);font-weight:700;letter-spacing:.04em}
+.exbody .txt{white-space:pre-wrap}
+.exbody table{margin:9px 0;font-size:12.8px}
+.exbody th,.exbody td{padding:6px 9px}
+
+/* ---------- 底部操作条 ---------- */
+
+.qbar{
+  position:fixed;left:0;right:0;bottom:0;z-index:800;
+  background:var(--card);border-top:1px solid var(--line2);
+  padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+}
+.qbar .in{max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.qbar .prog{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums;
+            white-space:nowrap;margin-right:auto}
+.qbar .prog b{color:var(--text);font-weight:700}
+.qbar button:disabled{opacity:.45;cursor:not-allowed}
+.qbar .spacer{flex:1 1 auto}
+
+/* ---------- 答题卡 ---------- */
+
+.sheet{display:grid;grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:8px;
+       max-height:52vh;overflow:auto;padding:2px}
+.sheet button{
+  padding:9px 0;font-size:12.5px;font-variant-numeric:tabular-nums;
+  border-radius:4px;background:var(--card);border:1px solid var(--line2);color:var(--muted);
+}
+.sheet button.done{color:var(--sel-tx);border-color:var(--sel-bd);background:var(--sel-bg)}
+.sheet button.right{color:var(--good);border-color:var(--good-bd);background:var(--good-bg)}
+.sheet button.wrong{color:var(--danger);border-color:var(--danger-bd);background:var(--danger-bg)}
+.sheet button.now{outline:2px solid var(--accent);outline-offset:1px}
+
+/* ---------- 题库 ---------- */
+
+.filters{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin-bottom:13px}
+.filters select,.filters input{
+  font-family:inherit;font-size:13px;padding:7px 10px;border:1px solid var(--line2);
+  border-radius:4px;background:var(--card);color:var(--text);
+}
+.filters input{flex:1 1 180px;min-width:0}
+.filters select:focus,.filters input:focus{outline:none;border-color:var(--accent)}
+
+.bankrow{display:flex;align-items:flex-start;gap:11px;padding:11px 4px;
+         border-bottom:1px solid var(--line)}
+.bankrow:last-child{border-bottom:none}
+.bankrow input[type=checkbox]{margin-top:4px;width:15px;height:15px;accent-color:var(--accent);flex:none}
+.bankrow .bt{flex:1 1 auto;min-width:0}
+.bankrow .bt .st{font-size:15px;line-height:1.8;
+                 display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.bankrow .bt .sm{font-size:12.5px;color:var(--muted);margin-top:4px;display:flex;gap:9px;
+                 flex-wrap:wrap;align-items:center}
+.bankrow .bt .sm .dot-right{color:var(--good)}
+.bankrow .bt .sm .dot-wrong{color:var(--danger)}
+
+.bulkbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+         padding:11px 0;border-top:1px dashed var(--line);margin-top:12px}
+.bulkbar .cnt{font-size:12.5px;color:var(--muted);margin-right:auto;font-variant-numeric:tabular-nums}
+.bulkbar .cnt b{color:var(--text)}
+
+/* ---------- 导入 ---------- */
+
+.imptext{width:100%;min-height:200px;padding:12px;border:1px solid var(--line2);
+         border-radius:4px;font-family:ui-monospace,Consolas,monospace;font-size:12.5px;
+         line-height:1.7;background:var(--th);color:var(--text);resize:vertical}
+.imptext:focus{outline:none;border-color:var(--accent)}
+
+/* ---------- 结果页 ---------- */
+
+.score{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
+       border:1px solid var(--line);border-radius:4px;overflow:hidden;margin-bottom:14px}
+.score > div{background:var(--card);padding:14px 16px}
+.score .k{font-size:11px;color:var(--muted);letter-spacing:.06em}
+.score .v{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:2px}
+
+.review{display:flex;flex-direction:column;gap:10px}
+.rv{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:14px 16px}
+.rv.ok{border-left:3px solid var(--good)}
+.rv.no{border-left:3px solid var(--danger)}
+.rv .rvh{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:7px}
+.rv .rvh .tag{font-size:11.5px;font-weight:700;letter-spacing:.06em}
+.rv.ok .rvh .tag{color:var(--good)}
+.rv.no .rvh .tag{color:var(--danger)}
+.rv .stem{font-size:15px;line-height:1.85;margin-bottom:10px}
+.rv .mine{font-size:13.5px;color:var(--muted);margin-bottom:7px}
+.rv .mine b{color:var(--text);font-weight:600}
+.rv .rv-ex{font-size:14px;line-height:1.9;border-top:1px dashed var(--line);
+           padding-top:11px;margin-top:10px;white-space:pre-wrap}
+.rv .rv-ex .lab{color:var(--muted);font-size:12.5px;display:block;margin-bottom:4px}
+
+/* ---------- 空状态 ---------- */
+
+.empty{text-align:center;color:var(--muted);font-size:13.5px;padding:44px 10px;line-height:1.9}
+.empty b{color:var(--text)}
+
+/* ---------- 弹窗：限高并在内部滚动 ---------- */
+
+#mbox{min-height:0;max-height:88vh}
+#mbox .mbody{overflow-y:auto;min-height:0;padding-right:3px}
+#mbox.wide{max-width:680px}
+#mbox.wide .frm textarea{min-height:88px}
+
+/* ---------- 题干与解析里的表格、配图 ---------- */
+
+.qtable{display:block;width:100%;border-collapse:collapse;font-size:13.5px;line-height:1.7;
+        margin:11px 0;overflow-x:auto}
+.qtable th,.qtable td{border:1px solid var(--line2);padding:7px 10px;text-align:left;vertical-align:top}
+.qtable th{background:rgba(127,127,127,.10);font-weight:600}
+.qtable .num{font-variant-numeric:tabular-nums;text-align:center;white-space:nowrap}
+.eximg{display:block;max-width:100%;height:auto;margin:10px 0;
+       border:1px solid var(--line);border-radius:4px}
+
+/* ---------- 待答组卷 ---------- */
+
+.pending{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.pending .pdn{font-size:13px;color:var(--muted)}
+.pending .pdn b{color:var(--text);font-size:14px}
+.pending .pdc{font-size:12px;color:var(--muted)}
+.pending .pdb{margin-left:auto;display:flex;gap:8px}
+
+/* ---------- 分组头 ---------- */
+
+.ghead{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.ghead .meta{margin-left:auto;font-size:11.5px;color:var(--muted)}
+
+/* ---------- 试卷卡片 ---------- */
+
+.papers{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-bottom:16px}
+.paper{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:14px 16px}
+.paper .ph{display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+           margin-bottom:11px;flex-wrap:wrap}
+.paper .pn{font-size:15px;font-weight:700;letter-spacing:.02em}
+.paper .pb{display:flex;gap:8px;flex-wrap:wrap}
+
+/* ---------- 试卷标签 / 重复标记 ---------- */
+
+.pp{font-size:11px;padding:1px 6px;border-radius:3px;border:1px solid var(--line2);color:var(--muted)}
+.duptag{font-size:11px;padding:1px 6px;border-radius:3px;color:var(--danger);
+        border:1px solid var(--danger-bd);background:var(--danger-bg)}
+
+/* ---------- 查重 ---------- */
+
+.dgh{font-size:12px;color:var(--muted);letter-spacing:.06em;padding-bottom:8px;
+     border-bottom:1px solid var(--line2);margin-bottom:2px}
+.duprow{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.duprow .dp{flex:none;display:flex;gap:6px;align-items:center}
+.duprow .dt{flex:1 1 auto;min-width:0;font-size:13.5px;line-height:1.7}
+.duprow .db{flex:none;display:flex;gap:6px}
+
+/* ---------- 编辑表单 ---------- */
+
+.frm{display:flex;flex-direction:column;gap:11px}
+.frm .erow{display:flex;flex-direction:column;gap:5px}
+.frm label{font-size:12px;color:var(--muted);letter-spacing:.04em}
+.frm input,.frm select,.frm textarea{
+  font-family:inherit;font-size:13.5px;padding:8px 10px;border:1px solid var(--line2);
+  border-radius:4px;background:var(--th);color:var(--text);width:100%;
+}
+.frm textarea{line-height:1.75;resize:vertical}
+.frm input:focus,.frm select:focus,.frm textarea:focus{outline:none;border-color:var(--accent)}
+
+/* ---------- 富文本编辑 ---------- */
+
+.frm .lrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.frm .lrow .rtools{margin-left:auto;display:flex;gap:6px}
+
+.rich{
+  min-height:90px;max-height:300px;overflow:auto;padding:9px 11px;
+  border:1px solid var(--line2);border-radius:4px;background:var(--th);
+  color:var(--text);font-size:13.5px;line-height:1.75;
+}
+.rich:focus{outline:none;border-color:var(--accent)}
+.rich table{margin:8px 0;font-size:12.5px}
+.rich th,.rich td{border:1px solid var(--line2);padding:5px 8px}
+.rich img{max-width:100%;border-radius:4px}
+
+.richsrc{font-family:ui-monospace,Consolas,monospace;font-size:12px}
+
+/* ---------- 预览层 ---------- */
+
+#mbox{position:relative}
+.prevlayer{
+  position:absolute;inset:0;z-index:30;overflow:auto;
+  background:var(--card);border-radius:6px;padding:18px 16px;
+}
+.prevbar{display:flex;align-items:center;gap:9px;margin-bottom:13px;
+         font-size:12px;color:var(--muted);letter-spacing:.06em}
+.prevbar button{margin-left:auto}
+
+/* ---------- 深浅色切换 ---------- */
+
+.themefab{
+  position:fixed;top:16px;right:16px;z-index:60;
+  width:38px;height:38px;padding:0;border-radius:50%;
+  display:grid;place-items:center;
+  background:var(--card);border:1px solid var(--line2);
+  color:var(--muted);cursor:pointer;transition:.15s ease;
+}
+.themefab:hover{color:var(--accent);border-color:var(--accent)}
+.themefab svg{
+  width:17px;height:17px;display:block;
+  fill:none;stroke:currentColor;stroke-width:1.7;
+  stroke-linecap:round;stroke-linejoin:round;
+}
+.themefab .ic-sun{display:none}
+html[data-theme="dark"] .themefab .ic-sun{display:block}
+html[data-theme="dark"] .themefab .ic-moon{display:none}
+
+.hacts{margin-right:46px}
+
+/* ---------- 规范依据 ---------- */
+
+.src{
+  margin-top:12px;padding:10px 13px;
+  border-left:2px solid var(--accent);
+  background:var(--th);
+  font-size:13px;line-height:1.9;color:var(--muted);
+}
+.src b{color:var(--accent);font-weight:600;letter-spacing:.04em}
+
+/* ---------- 判定标记 ---------- */
+
+.opt.is-right::after{content:"✓";margin-left:auto;flex:none;font-weight:700;
+                     font-size:15px;line-height:1.6;color:var(--good)}
+.opt.is-wrong::after{content:"✕";margin-left:auto;flex:none;font-weight:700;
+                     font-size:15px;line-height:1.6;color:var(--danger)}
+
+/* ---------- 进度条与快捷键提示 ---------- */
+
+.qbar .pbar{position:absolute;left:0;right:0;top:-1px;height:2px;background:var(--line)}
+.qbar .pbar i{display:block;height:100%;background:var(--accent);transition:width .2s ease}
+.qbar .keys{font-size:11.5px;color:var(--muted);letter-spacing:.02em;white-space:nowrap}
+
+@media(max-width:760px){
+  .qbar .keys{display:none}
+}
+
+/* ---------- 小部件 ---------- */
+
+.confirmrow{display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap}
+.confirmrow .hint{font-size:12.5px;color:var(--muted)}
+
+.tip{font-size:12.5px;color:var(--muted);margin-top:10px;letter-spacing:.02em}
+
+button.mini{padding:2px 9px;font-size:12px;border-radius:3px;background:var(--card);
+            border:1px solid var(--line2);color:var(--muted)}
+button.mini:hover{color:var(--accent);border-color:var(--sel-bd);background:var(--sel-bg)}
+
+/* ---------- 移动端 ---------- */
+
+@media(max-width:760px){
+  .entry{grid-template-columns:1fr}
+  .papers{grid-template-columns:1fr}
+  .duprow{flex-wrap:wrap}
+  .duprow .dt{flex-basis:100%;order:3}
+  .qcard{padding:14px 13px}
+  .stem{font-size:15px}
+  .score{grid-template-columns:repeat(2,1fr)}
+  .ex{grid-template-columns:1fr;gap:9px}
+  .exbody{grid-column:1}
+  .qbar .in{gap:7px}
+  .qbar .prog{font-size:12px}
+  .qbar .in button{padding:6px 10px;font-size:12.5px}
+  .themefab{top:12px;right:12px;width:34px;height:34px}
+  .themefab svg{width:15px;height:15px}
+  .hacts{margin-right:40px}
+}
