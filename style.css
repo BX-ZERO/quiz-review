@@ -218,6 +218,12 @@ html[data-theme="dark"]{
 
 /* ---------- 题干与解析里的表格、配图 ---------- */
 
+.cap{
+  margin:16px 0 7px;font-size:12.5px;color:var(--muted);
+  line-height:1.6;letter-spacing:.02em;
+}
+.cap + .qtable{margin-top:0}
+
 .qtable{display:table;width:100%;border-collapse:separate;border-spacing:0;
         border:1px solid var(--line2);font-size:13.5px;line-height:1.7;margin:11px 0}
 .qtable th,.qtable td{border:0;border-right:1px solid var(--line2);

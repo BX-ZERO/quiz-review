@@ -1,4 +1,4 @@
-window.QUESTIONS_VER = "2026-11-15.1";
+window.QUESTIONS_VER = "2026-11-15.2";
 // 错题复习题库：按卷组织，paper 为卷名。
 window.QUESTIONS = [
   {
@@ -1651,7 +1651,7 @@ window.QUESTIONS = [
     "answer": [
       "A"
     ],
-    "explain": "临时建筑面积小于 5000m² 的临建区，火灾延续时间 1h，单位时间灭火用水量 10 L/s。<table class='qtable'><thead><tr><th>临建区</th><th>火灾延续时间/h</th><th>单位时间灭火用水量/(L/s)</th></tr></thead><tbody><tr><td>临时建筑面积 &lt; 5000 m²</td><td>1</td><td>10</td></tr><tr><td>5000m² &lt; 临时建筑面积 &lt; 10000m²</td><td>1</td><td>15</td></tr><tr><td>临建区占地面积 &gt; 10000m²</td><td>1</td><td>20</td></tr></tbody></table><div class='cap'>表 13-3　临建区的临时室外消防用水量</div><table class='qtable'><thead><tr><th>在建工程（单体）</th><th>火灾延续时间/h</th><th>单位时间灭火用水量/(L/s)</th></tr></thead><tbody><tr><td>在建工程体积 &lt; 30000m³</td><td>2</td><td>20</td></tr><tr><td>30000m³ &lt; 在建工程体积 &lt; 50000m³</td><td>2</td><td>25</td></tr><tr><td>在建工程体积 &gt; 50000m³</td><td>3</td><td>30</td></tr></tbody></table><div class='cap'>表 13-4　在建工程的临时室外消防用水量</div><div class=\"src\"><b>依据</b>：《建设工程施工现场消防安全技术规范》GB 50720-2011 表 13-3、表 13-4。</div>"
+    "explain": "临时建筑面积小于 5000m² 的临建区，火灾延续时间 1h，单位时间灭火用水量 10 L/s。<div class='cap'>临建区的临时室外消防用水量</div><table class='qtable'><thead><tr><th>临建区</th><th>火灾延续时间/h</th><th>单位时间灭火用水量/(L/s)</th></tr></thead><tbody><tr><td>临时建筑面积 &lt; 5000 m²</td><td>1</td><td>10</td></tr><tr><td>5000m² &lt; 临时建筑面积 &lt; 10000m²</td><td>1</td><td>15</td></tr><tr><td>临建区占地面积 &gt; 10000m²</td><td>1</td><td>20</td></tr></tbody></table><div class='cap'>在建工程的临时室外消防用水量</div><table class='qtable'><thead><tr><th>在建工程（单体）</th><th>火灾延续时间/h</th><th>单位时间灭火用水量/(L/s)</th></tr></thead><tbody><tr><td>在建工程体积 &lt; 30000m³</td><td>2</td><td>20</td></tr><tr><td>30000m³ &lt; 在建工程体积 &lt; 50000m³</td><td>2</td><td>25</td></tr><tr><td>在建工程体积 &gt; 50000m³</td><td>3</td><td>30</td></tr></tbody></table><div class=\"src\"><b>依据</b>：《建设工程施工现场消防安全技术规范》GB 50720-2011 表 13-3、表 13-4。</div>"
   },
   {
     "id": "j2-22",
