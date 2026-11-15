@@ -334,6 +334,17 @@ html[data-theme="dark"] .themefab .ic-moon{display:none}
 }
 .src b{color:var(--accent);font-weight:600;letter-spacing:.04em}
 
+/* ---------- 页脚徽章 ---------- */
+
+.foot{
+  margin:30px 0 72px;padding-top:18px;border-top:1px solid var(--line2);
+  display:flex;justify-content:center;
+}
+.foot a{display:inline-flex;opacity:.82;transition:.15s;border-radius:3px}
+.foot a:hover{opacity:1}
+.foot a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.foot img{display:block;width:auto;height:20px}
+
 /* ---------- 判定标记 ---------- */
 
 .opt.is-right::after{content:"✓";margin-left:auto;flex:none;font-weight:700;

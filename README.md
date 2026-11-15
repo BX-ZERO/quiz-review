@@ -65,3 +65,7 @@
 ## 说明
 
 题目的原始截图不在本仓库内。题库内容以题库答案为准，部分题目与现行规范存在出入的，已在解析的「依据」里注明。
+
+---
+
+[![](https://img.shields.io/badge/powered_by_dsh-4D6BFE?style=flat-square&logo=deepseek&logoColor=white)](https://github.com/deepseek-ai/deepseek-harness)
