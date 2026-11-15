@@ -1,4 +1,4 @@
-# 错题复习 / Safety Officer Quiz Review
+# 错题复习 / Quiz Review
 
 `v1.0.3`
 
