@@ -1,8 +1,8 @@
-# 安全员错题复习 / Safety Officer Quiz Review
+# 错题复习 / Safety Officer Quiz Review
 
 `v1.0.3`
 
-施工现场安全员考试错题练习页。纯静态，无后端、无依赖。
+考试错题练习页。纯静态，无后端、无依赖。
 
 ## 使用
 
