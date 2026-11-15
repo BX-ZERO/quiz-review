@@ -68,4 +68,4 @@
 
 ---
 
-[![](https://img.shields.io/badge/powered_by_dsh-4D6BFE?style=flat-square&logo=deepseek&logoColor=white)](https://github.com/deepseek-ai/deepseek-harness)
+<a href="https://github.com/deepseek-ai/deepseek-harness"><img src="img/dsh-badge.png" width="121" height="20" alt="powered by dsh"></a>
