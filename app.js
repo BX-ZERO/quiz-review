@@ -401,6 +401,7 @@
     else if (state.view === 'wrong') html = viewWrong();
     else if (state.view === 'import') html = viewImport();
     app.innerHTML = html;
+    if (document.body) document.body.classList.toggle('quizmode', state.view === 'quiz');
     syncHeader();
     window.scrollTo(0, 0);
   }
