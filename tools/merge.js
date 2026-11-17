@@ -1,9 +1,11 @@
 /* 把一份识别结果（JSON 数组）并入题库
-   用法：node tools/merge.js 卷2 _juan2.json
+   用法：node tools/merge.js 卷2 _juan2.json [题库版本]
    规则：
      同一卷里出现重复题 → 并在已有那条上，不新增；
      跨卷重复 → 各卷各自保留一条，不做合并（总题库视图会自动去重）；
      题干相似度阈值 0.82，题型不同或同属一个案例组的不参与判重。
+     第三个参数是写回 questions.js 的 window.QUESTIONS_VER，省略则沿用原值；
+     不传版本时页面不会覆盖用户本地旧题库，所以更新题库内容务必带上新版本。
    合并前自动备份为 questions.before-merge.js。
 */
 const fs = require('fs');
@@ -22,8 +24,12 @@ if (!paperName || !inputFile) {
 
 const ctx = { window: {} };
 vm.createContext(ctx);
-vm.runInContext(fs.readFileSync(qfile, 'utf8'), ctx);
+const oldText = fs.readFileSync(qfile, 'utf8');
+vm.runInContext(oldText, ctx);
 const bank = ctx.window.QUESTIONS.map((q) => Object.assign({}, q));
+
+const oldVer = (oldText.match(/window\.QUESTIONS_VER\s*=\s*"([^"]*)"/) || [])[1] || '';
+const ver = process.argv[4] || oldVer;
 
 const incoming = JSON.parse(fs.readFileSync(path.resolve(dir, inputFile), 'utf8'));
 
@@ -110,8 +116,9 @@ const head = `/* 错题复习题库 —— window.QUESTIONS
 */`;
 
 fs.copyFileSync(qfile, path.join(dir, 'questions.before-merge.js'));
-fs.writeFileSync(qfile, head + '\nwindow.QUESTIONS = ' + JSON.stringify(bank, null, 2) + ';\n', 'utf8');
+const verLine = ver ? 'window.QUESTIONS_VER = "' + ver + '";\n' : '';
+fs.writeFileSync(qfile, head + '\n' + verLine + 'window.QUESTIONS = ' + JSON.stringify(bank, null, 2) + ';\n', 'utf8');
 
 console.log('新增', added.length, '条:', added.join(' '));
 console.log('合并', merged.length, '条:', JSON.stringify(merged));
-console.log('题库总数', bank.length);
+console.log('题库总数', bank.length, '　版本', ver || '(无)');
